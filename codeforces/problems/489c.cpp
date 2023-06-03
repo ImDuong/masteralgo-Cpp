@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
+using namespace std;
 
-int main()
+int mySolution(int m, int s)
 {
-    int m, s;
-    scanf("%d%d", &m, &s);
     if (m == 1 && s <= 9)
     {
         printf("%d %d", s, s);
@@ -33,7 +32,9 @@ int main()
             {
                 printf("9");
             }
-        } else {
+        }
+        else
+        {
             for (int i = 1; i <= s / 9; i++)
             {
                 printf("9");
@@ -78,5 +79,47 @@ int main()
             printf("0");
         }
     }
+    return 0;
+}
+
+int main()
+{
+    int m, s, spareSum, j;
+    scanf("%d%d", &m, &s);
+
+    // solution from: https://codeforces.com/contest/489/submission/26238432
+    if (m == 1 && s <= 9)
+    {
+        printf("%d %d", s, s);
+        return 0;
+    }
+    if (!(m * 9 >= s && 1 <= s))
+    {
+        printf("-1 -1");
+        return 0;
+    }
+
+    // print min
+    spareSum = s;
+    for (int i = m - 1; i >= 0; i--) {
+        j = max(0, spareSum - i * 9);
+        if (i == m - 1 && j == 0) {
+            j = 1;
+        }
+        spareSum -= j;
+        printf("%d", j);
+    }
+
+    // print separator
+    printf(" ");
+
+    // print max
+    spareSum = s;
+    for (int i = 1; i <= m; i++) {
+        j = min(9, spareSum);
+        spareSum -= j;
+        printf("%d", j);
+    }
+
     return 0;
 }
