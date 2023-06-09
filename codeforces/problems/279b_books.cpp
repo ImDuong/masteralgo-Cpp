@@ -1,51 +1,37 @@
-#include <stdio.h>
+#include <bits/stdc++.h>
 
 int main()
 {
     int n, t;
     scanf("%d%d", &n, &t);
     int b[n];
-    int minTime = 1000000000;
-    for (int i = 0; i < n; i++)
+    int bookSum[n + 1];
+    for (int i = 1; i <= n; i++)
     {
         scanf("%d", &b[i]);
-        if (minTime > b[i])
-        {
-            minTime = b[i];
-        }
+        bookSum[i] = bookSum[i - 1] + b[i];
     }
-
     int maxNbReadBooks = 0;
-    for (int i = 0; i < n; i++)
-    {
-        // prune
-        if ((n - i) < maxNbReadBooks || maxNbReadBooks * minTime > t)
-        {
+    for (int i = 1; i <= n; i++) {
+        if (b[i] > t) {
             continue;
         }
-
-        int readTimeLeft = t;
-        int nbReadBooks = 0;
-        for (int j = i; j < n; j++)
-        {
-            // prune
-            if ((n - j) + nbReadBooks < maxNbReadBooks ||
-                (maxNbReadBooks > nbReadBooks && (maxNbReadBooks - nbReadBooks) * minTime > readTimeLeft))
-            {
-                break;
+        int l = i;
+        int r = n;
+        int mid;
+        while (l < r) {
+            mid = (r + l) / 2;
+            mid++;
+            if (bookSum[mid] - bookSum[i - 1] <= t) {
+                l = mid;
+            } else {
+                r = mid - 1;
             }
-
-            if (b[j] > readTimeLeft)
-            {
-                break;
-            }
-            readTimeLeft -= b[j];
-            nbReadBooks++;
         }
-        if (nbReadBooks > maxNbReadBooks)
-        {
-            maxNbReadBooks = nbReadBooks;
-        }
+        maxNbReadBooks = std::max(maxNbReadBooks, l - i + 1);
     }
+
     printf("%d", maxNbReadBooks);
+
+    return 0;
 }
