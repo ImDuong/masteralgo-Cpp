@@ -20,8 +20,7 @@ int main()
         int r = n;
         int mid;
         while (l < r) {
-            mid = (r + l) / 2;
-            mid++;
+            mid = (r + l) / 2 + 1;
             if (bookSum[mid] - bookSum[i - 1] <= t) {
                 l = mid;
             } else {
